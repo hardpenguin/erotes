@@ -1,0 +1,6 @@
+*.deb
+*.exe
+*.zip
+
+# all subdirectories
+*/*
