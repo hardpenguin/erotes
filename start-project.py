@@ -4,39 +4,46 @@ import sys
 import os
 
 import urllib
+import json
 
 ScriptDir=os.path.dirname(os.path.abspath(sys.argv[0]))
 
-class DownloadedFile(object): # downloads the file from a chosen URL and checks its name
+class DownloadedFile(object): # file to be downloaded from a specified URL
     
     def __init__(self,Link):
         self.Link=Link
-        self.Name=self.Link.split("downloads/")[1]
+        self.Name=self.Link.split("downloads/")[1] # determine the target name for urlretrieve
 
-    def Download(self,Destination):
+    def Download(self,Destination): # downloads the file from object defined URL to specified path
         self.Destination=Destination
         urllib.urlretrieve(self.Link,self.Destination)
         # I gave up on handling download errors as bitbucket willingly serves a HTML file for wrong links
 
-class CreatedFolder(object): # creates folder and returns its absolute path
+class CreatedFolder(object): # folder to be created, needs name
 
-    def __init__(self,Name):
-        self.Name=Name
-
-    def Create(self,Path):
+    def __init__(self,Path):
         self.Path=Path
-        if not os.path.exists(self.Path+"/"+self.Name):
-            os.makedirs(self.Path+"/"+self.Name)
-        return(self.Path+"/"+self.Name)
 
-LovePath=CreatedFolder("love").Create(ScriptDir)
+    def Create(self): # creates folder with a object defined name in a specified path
+        if not os.path.exists(self.Path):
+            os.makedirs(self.Path)
+        return(self.Path)
 
-LinksForDownload=[
-                    "https://bitbucket.org/rude/love/downloads/love_0.10.2ppa1_amd64.deb",
-                    "https://bitbucket.org/rude/love/downloads/liblove0_0.10.2ppa1_amd64.deb"
-                 ]
+class ConfigFile(object): # config file to be loaded and read
 
-for Link in LinksForDownload:
-    D=DownloadedFile(Link)
-    D.Download(LovePath+"/"+D.Name)
-    print "Downloading "+D.Name+"..."
+    def __init__(self,FilePath):
+        self.FilePath=FilePath
+
+    def Read(self):
+        with open(self.FilePath, 'r') as F:
+            return(json.load(F))
+
+ErotesConfig=ConfigFile(ScriptDir+"/defaults/config.json").Read()
+
+for Platform in ErotesConfig["platforms"]:
+    PlatformPath=CreatedFolder(ScriptDir+"/love/"+Platform).Create()
+    for Link in ErotesConfig["links"]:
+        if Link["platform"]==Platform:
+            D=DownloadedFile(Link["link"])
+            D.Download(PlatformPath+"/"+D.Name)
+            print "Downloading "+D.Name+"..."

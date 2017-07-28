@@ -2,5 +2,5 @@
 *.exe
 *.zip
 
-# all subdirectories
-*/*
+# chosen subdirectories
+love/

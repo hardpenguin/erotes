@@ -1,0 +1,8 @@
+{
+    "platforms": ["linux64", "windows32"],
+    "links": [
+        {"platform": "linux64", "link": "https://bitbucket.org/rude/love/downloads/love_0.10.2ppa1_amd64.deb"},
+        {"platform": "linux64", "link": "https://bitbucket.org/rude/love/downloads/liblove0_0.10.2ppa1_amd64.deb"},
+        {"platform": "windows32", "link": "https://bitbucket.org/rude/love/downloads/love-0.10.2-win32.zip"}
+    ]
+}
