@@ -6,7 +6,10 @@ import os
 import urllib
 import json
 
+import libarchive
+
 ScriptDir=os.path.dirname(os.path.abspath(sys.argv[0]))
+os.chdir(ScriptDir)
 
 class DownloadedFile(object): # file to be downloaded from a specified URL
     
@@ -35,15 +38,33 @@ class ConfigFile(object): # config file to be loaded and read
         self.FilePath=FilePath
 
     def Read(self):
-        with open(self.FilePath, 'r') as F:
-            return(json.load(F))
+        with open(self.FilePath, 'r') as File:
+            return(json.load(File))
+
+class UnpackedArchive(object): # archive to be unpacked
+    
+    def __init__(self,FilePath):
+        self.FilePath=FilePath
+
+    def Unpack(self):
+        libarchive.extract_file(self.FilePath)
 
 ErotesConfig=ConfigFile(ScriptDir+"/defaults/config.json").Read()
 
 for Platform in ErotesConfig["platforms"]:
     PlatformPath=CreatedFolder(ScriptDir+"/love/"+Platform).Create()
     for Link in ErotesConfig["links"]:
+        os.chdir(ScriptDir)
         if Link["platform"]==Platform:
-            D=DownloadedFile(Link["link"])
-            D.Download(PlatformPath+"/"+D.Name)
-            print "Downloading "+D.Name+"..."
+
+            Archive=DownloadedFile(Link["link"])          
+            print "Downloading "+Archive.Name+"..."
+            Archive.Download(PlatformPath+"/"+Archive.Name)
+
+            ArchiveContentsPathName=Archive.Name.replace(".deb","").replace(".zip","")
+            ArchiveContentsPath=CreatedFolder(ScriptDir+"/love/"+Platform+"/"+ArchiveContentsPathName).Create()
+            os.chdir(ArchiveContentsPath)
+            print "Unpacking "+Archive.Name+"..."
+            UnpackedArchive(PlatformPath+"/"+Archive.Name).Unpack()
+
+print "Done."

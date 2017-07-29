@@ -6,5 +6,11 @@
 - running the development version of the project
 - exporting the project to Linux and Windows executable format
 
-#### Disclaimer
+## Dependencies
+
+- python2.7
+- python-libarchive-c
+- libarchive
+
+## Disclaimer
 It's work in progress, needs better documentation and new features will pop up hopefully in the future.
