@@ -1,6 +1,8 @@
 *.deb
 *.exe
 *.zip
+*.pyc
+*.love
 
 # chosen subdirectories
 love/
