@@ -1,3 +1,3 @@
 #!/usr/bin/python2.7
 
-import start_project
+from start_project import *

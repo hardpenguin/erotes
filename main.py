@@ -13,6 +13,6 @@ import config
 ScriptDir=os.path.dirname(os.path.abspath(sys.argv[0]))
 os.chdir(ScriptDir)
 
-ErotesConfig=config.config.ConfigFile(ScriptDir+"/config.json").Read()
+ErotesConfig=config.ConfigFile(ScriptDir+"/config.json").Read()
 
-start_project.start_project.StartProject(ErotesConfig,ScriptDir)
+start_project.StartProject(ErotesConfig,ScriptDir)
