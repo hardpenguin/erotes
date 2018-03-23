@@ -15,4 +15,8 @@ os.chdir(ScriptDir)
 
 ErotesConfig=config.ConfigFile(ScriptDir+"/config.json").Read()
 
-start_project.StartProject(ErotesConfig,ScriptDir)
+start_project.CreateWorkplace(ScriptDir+"/templates/"+ErotesConfig["template"], \
+                                            ErotesConfig["template"], \
+                                            ErotesConfig, \
+                                            ScriptDir)
+start_project.DownloadLove(ErotesConfig,ScriptDir)

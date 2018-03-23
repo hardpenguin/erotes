@@ -2,13 +2,21 @@
 
 # standard library
 import os
+import distutils.dir_util
 
 # project modules
 import created_folder
 import downloaded_file
 import unpacked_archive
 
-def StartProject(ErotesConfig,WorkDir):
+def CreateWorkplace(TemplateSource,TemplateName,ErotesConfig,WorkDir):
+
+    print "Creating workplace from \""+TemplateName+"\" template..."
+    distutils.dir_util.copy_tree(TemplateSource,WorkDir+"/workplace")
+    print "Done."
+
+
+def DownloadLove(ErotesConfig,WorkDir):
 
     for Platform in ErotesConfig["platforms"]:
         PlatformPath=created_folder.CreatedFolder(WorkDir+"/love/"+Platform).Create()
