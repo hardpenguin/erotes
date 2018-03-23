@@ -4,14 +4,11 @@
 import os
 
 # project modules
-import config
 import created_folder
 import downloaded_file
 import unpacked_archive
 
-def StartProject(ConfigPath,WorkDir):
-
-    ErotesConfig=config.ConfigFile(ConfigPath).Read()
+def StartProject(ErotesConfig,WorkDir):
 
     for Platform in ErotesConfig["platforms"]:
         PlatformPath=created_folder.CreatedFolder(WorkDir+"/love/"+Platform).Create()

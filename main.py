@@ -8,10 +8,11 @@ import sys
 import start_project
 import run_project
 import export_project
+import config
 
 ScriptDir=os.path.dirname(os.path.abspath(sys.argv[0]))
 os.chdir(ScriptDir)
 
-ErotesConfigPath=ScriptDir+"/config.json"
+ErotesConfig=config.config.ConfigFile(ScriptDir+"/config.json").Read()
 
-start_project.start_project.StartProject(ErotesConfigPath,ScriptDir)
+start_project.start_project.StartProject(ErotesConfig,ScriptDir)
