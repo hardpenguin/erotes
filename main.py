@@ -10,13 +10,13 @@ import run_project
 import export_project
 import config
 
-ScriptDir=os.path.dirname(os.path.abspath(sys.argv[0]))
-os.chdir(ScriptDir)
+ErotesDir=os.path.dirname(os.path.abspath(sys.argv[0]))
+CurrentDir=os.getcwd()
 
-ErotesConfig=config.ConfigFile(ScriptDir+"/config.json").Read()
+ErotesConfig=config.ConfigFile(ErotesDir+"/config.json").Read()
 
-start_project.CreateWorkplace(ScriptDir+"/templates/"+ErotesConfig["template"], \
+start_project.CreateWorkplace(ErotesDir+"/templates/"+ErotesConfig["template"], \
                                             ErotesConfig["template"], \
                                             ErotesConfig, \
-                                            ScriptDir)
-start_project.DownloadAndUnpackLove(ErotesConfig,ScriptDir)
+                                            CurrentDir)
+start_project.DownloadAndUnpackLove(ErotesConfig,CurrentDir)
