@@ -3,6 +3,7 @@
 # standard library
 import os
 import distutils.dir_util
+import distutils.file_util
 
 # project modules
 import created_folder
@@ -16,10 +17,11 @@ def CreateWorkplace(TemplateSource,TemplateName,ErotesConfig,WorkDir):
     print "Done."
 
 
-def DownloadLove(ErotesConfig,WorkDir):
+def DownloadAndUnpackLove(ErotesConfig,WorkDir):
 
     for Platform in ErotesConfig["platforms"]:
-        PlatformPath=created_folder.CreatedFolder(WorkDir+"/love/"+Platform).Create()
+        PlatformPath=created_folder.CreatedFolder(WorkDir+"/downloads/"+Platform).Create()
+        created_folder.CreatedFolder(WorkDir+"/love/"+Platform).Create()
         for Link in ErotesConfig["links"]:
             os.chdir(WorkDir)
             if Link["platform"]==Platform:
@@ -29,9 +31,27 @@ def DownloadLove(ErotesConfig,WorkDir):
                 Archive.Download(PlatformPath+"/"+Archive.Name)
 
                 ArchiveContentsPathName=Archive.Name.replace(".deb","").replace(".zip","")
-                ArchiveContentsPath=created_folder.CreatedFolder(WorkDir+"/love/"+Platform+"/"+ArchiveContentsPathName).Create()
+                ArchiveContentsPath=created_folder.CreatedFolder(WorkDir+"/downloads/"+Platform+"/"+ArchiveContentsPathName).Create()
                 os.chdir(ArchiveContentsPath)
                 print "Unpacking "+Archive.Name+"..."
+                
                 unpacked_archive.UnpackedArchive(PlatformPath+"/"+Archive.Name).Unpack()
+
+                if "linux" in Link["platform"]:
+                    unpacked_archive.UnpackedArchive(ArchiveContentsPath+"/data.tar.xz").Unpack()
+
+                    for Root, Dirs, Files in os.walk(ArchiveContentsPath):
+                        for File in Files:
+                            if ("/usr/bin" in Root) or ("/usr/lib" in Root):
+                                distutils.file_util.copy_file(Root+"/"+File,WorkDir+"/love/"+Platform)
+
+                elif "windows" in Link["platform"]:
+                    
+                    for Root, Dirs, Files in os.walk(ArchiveContentsPath):
+                        for File in Files:
+                            if ("love.exe" in Files):
+                                distutils.file_util.copy_file(Root+"/"+File,WorkDir+"/love/"+Platform)
+
+
 
     print "Done."

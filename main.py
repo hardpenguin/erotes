@@ -19,4 +19,4 @@ start_project.CreateWorkplace(ScriptDir+"/templates/"+ErotesConfig["template"], 
                                             ErotesConfig["template"], \
                                             ErotesConfig, \
                                             ScriptDir)
-start_project.DownloadLove(ErotesConfig,ScriptDir)
+start_project.DownloadAndUnpackLove(ErotesConfig,ScriptDir)
