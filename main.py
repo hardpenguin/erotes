@@ -20,3 +20,5 @@ start_project.CreateWorkplace(ErotesDir+"/templates/"+ErotesConfig["template"], 
                                             ErotesConfig, \
                                             CurrentDir)
 start_project.DownloadAndUnpackLove(ErotesConfig,CurrentDir)
+
+run_project.RunWorkplace(CurrentDir)
