@@ -1,14 +1,10 @@
 #!/usr/bin/python2.7
 
-# standard library
 import os
 import distutils.dir_util
 import distutils.file_util
 
-# project modules
-import created_folder
-import downloaded_file
-import unpacked_archive
+import erotes_utils
 
 def CreateWorkplace(TemplateSource,TemplateName,ErotesConfig,WorkDir):
 
@@ -20,25 +16,25 @@ def CreateWorkplace(TemplateSource,TemplateName,ErotesConfig,WorkDir):
 def DownloadAndUnpackLove(ErotesConfig,WorkDir):
 
     for Platform in ErotesConfig["platforms"]:
-        PlatformPath=created_folder.CreatedFolder(WorkDir+"/downloads/"+Platform).Create()
-        created_folder.CreatedFolder(WorkDir+"/love/"+Platform).Create()
+        PlatformPath=erotes_utils.created_folder.CreatedFolder(WorkDir+"/downloads/"+Platform).Create()
+        erotes_utils.created_folder.CreatedFolder(WorkDir+"/love/"+Platform).Create()
         for Link in ErotesConfig["links"]:
             os.chdir(WorkDir)
             if Link["platform"]==Platform:
 
-                Archive=downloaded_file.DownloadedFile(Link["link"])          
+                Archive=erotes_utils.downloaded_file.DownloadedFile(Link["link"])          
                 print "Downloading "+Archive.Name+"..."
                 Archive.Download(PlatformPath+"/"+Archive.Name)
 
                 ArchiveContentsPathName=Archive.Name.replace(".deb","").replace(".zip","")
-                ArchiveContentsPath=created_folder.CreatedFolder(WorkDir+"/downloads/"+Platform+"/"+ArchiveContentsPathName).Create()
+                ArchiveContentsPath=erotes_utils.created_folder.CreatedFolder(WorkDir+"/downloads/"+Platform+"/"+ArchiveContentsPathName).Create()
                 os.chdir(ArchiveContentsPath)
                 print "Unpacking "+Archive.Name+"..."
                 
-                unpacked_archive.UnpackedArchive(PlatformPath+"/"+Archive.Name).Unpack()
+                erotes_utils.unpacked_archive.UnpackedArchive(PlatformPath+"/"+Archive.Name).Unpack()
 
                 if "linux" in Link["platform"]:
-                    unpacked_archive.UnpackedArchive(ArchiveContentsPath+"/data.tar.xz").Unpack()
+                    erotes_utils.unpacked_archive.UnpackedArchive(ArchiveContentsPath+"/data.tar.xz").Unpack()
 
                     for Root, Dirs, Files in os.walk(ArchiveContentsPath):
                         for File in Files:
