@@ -5,15 +5,21 @@ import libarchive
 
 import erotes_utils
 
-# just a stub
-def ExportProject(WorkDir):
+def ExportProject(Platforms,WorkDir):
 
     os.chdir(WorkDir+"/workplace")
     List=os.listdir('.')
 
-    erotes_utils.created_folder.CreatedFolder(WorkDir+"/downloads/"+Platform).Create()
-    
-    # move below to a new class
-    with libarchive.file_writer(ExportPath+'/game.love', 'zip') as archive:
-      for Every in (List):
-        archive.add_files(Every)
+    ExportPath=erotes_utils.created_folder.CreatedFolder(WorkDir+"/export").Create()
+    print "Creating .love file..."
+    LoveFile=erotes_utils.created_zip.CreatedZip(List,ExportPath).PackageContents() # create .love file
+
+    """if "linux64" in Platforms: # create Linux build
+                    with open("binary_file_1", "ab") as myfile, open("binary_file_2", "rb") as file2:
+                        myfile.write(file2.read())
+            
+                elif "windows32" in Platforms: # create Windows build
+                    """
+
+
+    print "Done."

@@ -1,10 +1,8 @@
 #!/usr/bin/python2.7
 
-# standard library
 import os
 import sys
 
-# project modules
 import erotes_start_project
 import erotes_run_project
 import erotes_export_project
@@ -22,3 +20,5 @@ erotes_start_project.CreateWorkplace(ErotesDir+"/templates/"+ErotesConfig["templ
 erotes_start_project.DownloadAndUnpackLove(ErotesConfig,CurrentDir)
 
 erotes_run_project.RunWorkplace(CurrentDir)
+
+erotes_export_project.ExportProject(ErotesConfig["platforms"],CurrentDir)
