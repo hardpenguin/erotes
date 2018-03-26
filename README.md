@@ -22,6 +22,7 @@ All basic functionalities listed in description are implemented.
 
 ## Todo
 
+- a release build
 - support for Windows and macOS development
 - support for Linux, Windows and macOS export
 - tests
