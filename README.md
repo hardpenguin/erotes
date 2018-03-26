@@ -4,7 +4,7 @@
 
 - creating an empty project template using chosen LÖVE version
 - running the development version of the project
-- exporting the project to Linux and Windows executable format
+- exporting the project to .love file as well as Linux and Windows executable format
 
 ## Dependencies
 
@@ -12,5 +12,16 @@
 - python-libarchive-c
 - libarchive
 
-## Disclaimer
-It's work in progress, needs better documentation and new features will pop up hopefully in the future.
+On Ubuntu 16.04, these dependencies can be installed by running:
+
+```sudo apt-get install python2.7 libarchive13 python-libarchive-c``` 
+
+## Status
+
+All basic functionalities listed in description are implemented.
+
+## Todo
+
+- command line arguments support
+- support for Windows and macOS development
+- support for Linux, Windows and macOS export
