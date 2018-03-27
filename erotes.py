@@ -15,29 +15,24 @@ ErotesConfig=erotes_utils.config.ConfigFile(ErotesDir+"/config.json").Read() # r
 
 Arguments=erotes_utils.arguments.Arguments(sys.argv) # read arguments
 
-for HelpLine in erotes_utils.helplines.HelpLines: # create help
-    Arguments.AddArgument(HelpLine[0],HelpLine[1],HelpLine[2])
+for Option in erotes_utils.options.Options: # create options
+    Arguments.AddArgument(Option[0], \
+                          Option[1], \
+                          Option[2])
 
-if len(Arguments.Args)<2:
-    Arguments.DisplayHelp()
-    sys.exit()
+Mode=erotes_utils.modes.SelectMode(Arguments) # decide what we're doing
 
-Mode=Arguments.ChooseFirstArgument() # decide what we're doing
-
-if (Mode==Arguments.SupportedArgs[0]["short"]) or \
-   (Mode==Arguments.SupportedArgs[0]["long"]): # start
+if (Mode=="start"): # start
     erotes_start_project.CreateWorkplace(ErotesDir+"/templates/"+ErotesConfig["template"], \
                                             ErotesConfig["template"], \
                                             ErotesConfig, \
                                             CurrentDir)
     erotes_start_project.DownloadAndUnpackLove(ErotesConfig,CurrentDir)
 
-elif (Mode==Arguments.SupportedArgs[1]["short"]) or \
-     (Mode==Arguments.SupportedArgs[1]["long"]): # run
+elif (Mode=="run"): # run
     erotes_run_project.RunWorkplace(CurrentDir)
 
-elif (Mode==Arguments.SupportedArgs[2]["short"]) or \
-     (Mode==Arguments.SupportedArgs[2]["long"]): # export
+elif (Mode=="export"): # export
     erotes_export_project.ExportProject(ErotesConfig["platforms"],CurrentDir)
 
 else: # help
