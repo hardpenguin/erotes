@@ -22,7 +22,8 @@ All basic functionalities listed in description are implemented.
 
 ## Todo
 
-- a release build
+- a release build (using pyinstaller)
+- local copy of templates and config in execution folder
 - support for Windows and macOS development
 - support for Linux, Windows and macOS export
 - tests
