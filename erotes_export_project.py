@@ -5,7 +5,7 @@ import libarchive
 
 import erotes_utils
 
-def ExportProject(Platforms,WorkDir):
+def ExportLove(WorkDir):
 
     os.chdir(WorkDir+"/workplace")
     List=os.listdir('.')
@@ -14,12 +14,15 @@ def ExportProject(Platforms,WorkDir):
     print "Creating .love file..."
     LoveFile=erotes_utils.created_zip.CreatedZip(List,ExportPath).PackageContents() # create .love file
 
+    print "Done."
+
+
+# def ExportLinux():
+# def ExportWindows():
+
     """if "linux64" in Platforms: # create Linux build
                     with open("binary_file_1", "ab") as myfile, open("binary_file_2", "rb") as file2:
                         myfile.write(file2.read())
             
                 elif "windows32" in Platforms: # create Windows build
                     """
-
-
-    print "Done."

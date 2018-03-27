@@ -6,7 +6,7 @@ import distutils.file_util
 
 import erotes_utils
 
-def CreateWorkplace(TemplateSource,TemplateName,ErotesConfig,WorkDir):
+def CreateWorkplace(TemplateSource,TemplateName,WorkDir):
 
     print "Creating workplace from \""+TemplateName+"\" template..."
     distutils.dir_util.copy_tree(TemplateSource,WorkDir+"/workplace")
@@ -27,7 +27,9 @@ def DownloadAndUnpackLove(ErotesConfig,WorkDir):
                 Archive.Download(PlatformPath+"/"+Archive.Name)
 
                 ArchiveContentsPathName=Archive.Name.replace(".deb","").replace(".zip","")
-                ArchiveContentsPath=erotes_utils.created_folder.CreatedFolder(WorkDir+"/downloads/"+Platform+"/"+ArchiveContentsPathName).Create()
+                ArchiveContentsPath=erotes_utils.created_folder \
+                                    .CreatedFolder(WorkDir+"/downloads/"+Platform+"/"+ArchiveContentsPathName) \
+                                    .Create()
                 os.chdir(ArchiveContentsPath)
                 print "Unpacking "+Archive.Name+"..."
                 

@@ -25,7 +25,6 @@ Mode=erotes_utils.modes.SelectMode(Arguments) # decide what we're doing
 if (Mode=="start"): # start
     erotes_start_project.CreateWorkplace(ErotesDir+"/templates/"+ErotesConfig["template"], \
                                             ErotesConfig["template"], \
-                                            ErotesConfig, \
                                             CurrentDir)
     erotes_start_project.DownloadAndUnpackLove(ErotesConfig,CurrentDir)
 

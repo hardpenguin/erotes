@@ -8,5 +8,7 @@ def RunWorkplace(WorkDir):
     RuntimeBinary="love"
 
     print "Running project..."
-    os.system("LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH:"+WorkDir+RuntimeSubpath+"\" "+WorkDir+RuntimeSubpath+RuntimeBinary+" "+WorkDir+"/workplace")
+    os.system("LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH:"+WorkDir+RuntimeSubpath+"\" " \
+              +WorkDir+RuntimeSubpath+RuntimeBinary+" " \
+              +WorkDir+"/workplace")
     print "Done."
