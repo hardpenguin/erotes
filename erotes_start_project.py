@@ -14,42 +14,49 @@ def CreateWorkplace(TemplateSource,TemplateName,WorkDir):
 
 
 def DownloadAndUnpackLove(ErotesConfig,WorkDir):
-
     for Platform in ErotesConfig["platforms"]:
-        PlatformPath=erotes_utils.created_folder.CreatedFolder(WorkDir+"/downloads/"+Platform).Create()
+        PlatformPath = erotes_utils.created_folder.CreatedFolder(WorkDir+"/downloads/"+Platform).Create()
         erotes_utils.created_folder.CreatedFolder(WorkDir+"/love/"+Platform).Create()
         for Link in ErotesConfig["links"]:
             os.chdir(WorkDir)
-            if Link["platform"]==Platform:
+            if Link["platform"] == Platform:
 
-                Archive=erotes_utils.downloaded_file.DownloadedFile(Link["link"])          
-                print "Downloading "+Archive.Name+"..."
-                Archive.Download(PlatformPath+"/"+Archive.Name)
+                Archive = erotes_utils.downloaded_file.DownloadedFile(Link["link"])          
+                ArchivePath = PlatformPath + "/" + Archive.Name
+                DownloadDestination = WorkDir + "/downloads/" + Platform + "/" + ArchiveContentsPathName
 
-                ArchiveContentsPathName=Archive.Name.replace(".deb","").replace(".zip","")
-                ArchiveContentsPath=erotes_utils.created_folder \
-                                    .CreatedFolder(WorkDir+"/downloads/"+Platform+"/"+ArchiveContentsPathName) \
-                                    .Create()
+                print "Downloading " + Archive.Name + "..."
+
+                Archive.Download(ArchivePath)
+                ArchiveContentsPathName = Archive.Name.replace(".deb", "").replace(".zip", "")
+                ArchiveContentsPath = erotes_utils.created_folder.CreatedFolder(DownloadDestination).Create()
                 os.chdir(ArchiveContentsPath)
-                print "Unpacking "+Archive.Name+"..."
-                
-                erotes_utils.unpacked_archive.UnpackedArchive(PlatformPath+"/"+Archive.Name).Unpack()
 
-                if "linux" in Link["platform"]:
-                    erotes_utils.unpacked_archive.UnpackedArchive(ArchiveContentsPath+"/data.tar.xz").Unpack()
+                print "Unpacking " + Archive.Name + "..."
 
-                    for Root, Dirs, Files in os.walk(ArchiveContentsPath):
-                        for File in Files:
-                            if ("/usr/bin" in Root) or ("/usr/lib" in Root):
-                                distutils.file_util.copy_file(Root+"/"+File,WorkDir+"/love/"+Platform)
+                erotes_utils.unpacked_archive.UnpackedArchive(ArchivePath).Unpack()
+                if IsLinux(Link):
+                    erotes_utils.unpacked_archive.UnpackedArchive(ArchiveContentsPath + "/data.tar.xz").Unpack()
 
-                elif "windows" in Link["platform"]:
+                DestinationFolder = WorkDir + "/love/" + Platform
+
+                CopyArchive(ArchiveContentsPath, DestinationFolder)
                     
-                    for Root, Dirs, Files in os.walk(ArchiveContentsPath):
-                        for File in Files:
-                            if ("love.exe" in Files):
-                                distutils.file_util.copy_file(Root+"/"+File,WorkDir+"/love/"+Platform)
-
-
-
+    def CopyArchive(Path, DestinationFolder):
+        for Root, Dirs, Files in os.walk(Path):
+            if HaveExecutable(Files, Root):
+                FilePath = Root + "/"
+                
+                CopyFiles(Files, DestinationFolder, FilePath)
+    
+    def HaveExecutable(Files, Root):
+        return (("love.exe" in Files) or ("/usr/bin" in Root) or ("/usr/lib" in Root))
+    
+    def CopyFiles(Files, DestinationFolder, FilePath):
+        for FileName in Files:
+            distutils.file_util.copy_file(FilePath + FileName, DestinationFolder)
+            
+    def IsLinux(Link):
+        return "linux" in Link["platform"]
+    
     print "Done."
