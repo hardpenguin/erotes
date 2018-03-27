@@ -9,3 +9,8 @@ love/
 workplace/
 downloads/
 export/
+
+# pyinstaller
+build/
+dist/
+erotes.spec
