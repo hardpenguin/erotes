@@ -4,7 +4,7 @@ class Downloadable(object): # file to be downloaded from a specified URL
     
     def __init__(self,Link):
         self.Link=Link
-        self.Name=self.Link.split("downloads/")[1] # determine the target name for urlretrieve
+        self.Name=self.Link.split("/")[-1] # determine the target name for urlretrieve
 
     def Download(self,Destination): # downloads the file from object defined URL to specified path
         self.Destination=Destination
