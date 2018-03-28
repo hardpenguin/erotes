@@ -22,30 +22,30 @@ def DownloadAndUnpackLove(ErotesConfig,WorkDir):
             os.chdir(WorkDir)
             if Link["platform"]==Platform:
 
-                Archive=erotes_utils.downloaded_file.DownloadedFile(Link["link"])          
-                print "Downloading "+Archive.Name+"..."
-                Archive.Download(PlatformPath+"/"+Archive.Name)
+                DownloadedPackage=erotes_utils.downloaded_file.DownloadedFile(Link["link"])          
+                print "Downloading "+DownloadedPackage.Name+"..."
+                DownloadedPackage.Download(PlatformPath+"/"+DownloadedPackage.Name)
 
-                ArchiveContentsPathName=Archive.Name.replace(".deb","").replace(".zip","")
-                ArchiveContentsPath=erotes_utils.created_folder \
-                                    .CreatedFolder(WorkDir+"/downloads/"+Platform+"/"+ArchiveContentsPathName) \
+                DownloadedPackageContentsPathName=DownloadedPackage.Name.replace(".deb","").replace(".zip","")
+                DownloadedPackageContentsPath=erotes_utils.created_folder \
+                                    .CreatedFolder(WorkDir+"/downloads/"+Platform+"/"+DownloadedPackageContentsPathName) \
                                     .Create()
-                os.chdir(ArchiveContentsPath)
-                print "Unpacking "+Archive.Name+"..."
+                os.chdir(DownloadedPackageContentsPath)
+                print "Unpacking "+DownloadedPackage.Name+"..."
                 
-                erotes_utils.unpacked_archive.UnpackedArchive(PlatformPath+"/"+Archive.Name).Unpack()
+                erotes_utils.archive.Archive(PlatformPath+"/"+DownloadedPackage.Name).Unpack()
 
                 if "linux" in Link["platform"]:
-                    erotes_utils.unpacked_archive.UnpackedArchive(ArchiveContentsPath+"/data.tar.xz").Unpack()
+                    erotes_utils.archive.Archive(DownloadedPackageContentsPath+"/data.tar.xz").Unpack()
 
-                    for Root, Dirs, Files in os.walk(ArchiveContentsPath):
+                    for Root, Dirs, Files in os.walk(DownloadedPackageContentsPath):
                         for File in Files:
                             if ("/usr/bin" in Root) or ("/usr/lib" in Root):
                                 distutils.file_util.copy_file(Root+"/"+File,WorkDir+"/love/"+Platform)
 
                 elif "windows" in Link["platform"]:
                     
-                    for Root, Dirs, Files in os.walk(ArchiveContentsPath):
+                    for Root, Dirs, Files in os.walk(DownloadedPackageContentsPath):
                         for File in Files:
                             if ("love.exe" in Files):
                                 distutils.file_util.copy_file(Root+"/"+File,WorkDir+"/love/"+Platform)

@@ -12,7 +12,7 @@ def ExportLove(WorkDir):
 
     ExportPath=erotes_utils.created_folder.CreatedFolder(WorkDir+"/export").Create()
     print "Creating .love file..."
-    LoveFile=erotes_utils.created_zip.CreatedZip(List,ExportPath).PackageContents() # create .love file
+    LoveFile=erotes_utils.archive.Archive(ExportPath+"/game.love").PackageFiles(List) # create .love file
 
     print "Done."
 
