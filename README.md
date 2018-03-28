@@ -27,8 +27,6 @@ Including a lot of advice from code review by zolnierzfortuny - thanks!
 - a release build (using pyinstaller)
 - split erotes_start_project.DownloadAndUnpackLove() into two smaller functions: DownloadLove() and UnpackLove()
 - create erotes_start_project.MoveUnpackedFiles() method that will walk the tree and copy files
-- avoid naming methods after modules
-- can we merge modules erotes_utils.created_zip and erotes_utils.unpacked_archive?
 - local copy of templates and config in execution folder
 - support for Windows and macOS development
 - support for Linux, Windows and macOS export

@@ -6,13 +6,12 @@ import libarchive
 import erotes_utils
 
 def ExportLove(WorkDir):
-
     os.chdir(WorkDir+"/workplace")
     List=os.listdir('.')
 
-    ExportPath=erotes_utils.created_folder.CreatedFolder(WorkDir+"/export").Create()
+    ExportPath=erotes_utils.directory_utils.Folder(WorkDir+"/export").Create()
     print "Creating .love file..."
-    LoveFile=erotes_utils.archive.Archive(ExportPath+"/game.love").PackageFiles(List) # create .love file
+    LoveFile=erotes_utils.archive.ArchiveFile(ExportPath+"/game.love").PackageFiles(List) # create .love file
 
     print "Done."
 

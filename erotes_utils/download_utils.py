@@ -1,6 +1,6 @@
 import urllib
 
-class DownloadedFile(object): # file to be downloaded from a specified URL
+class Downloadable(object): # file to be downloaded from a specified URL
     
     def __init__(self,Link):
         self.Link=Link

@@ -3,7 +3,6 @@
 import os
 
 def RunWorkplace(WorkDir):
-
     RuntimeSubpath="/love/linux64/"
     RuntimeBinary="love"
 

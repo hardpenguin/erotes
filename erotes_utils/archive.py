@@ -1,6 +1,6 @@
 import libarchive
 
-class Archive(object): # archive to be unpacked
+class ArchiveFile(object): # archive to be unpacked
     
     def __init__(self,FilePath):
         self.FilePath=FilePath

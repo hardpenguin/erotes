@@ -3,7 +3,7 @@
 import archive
 import arguments
 import config
-import created_folder
-import downloaded_file
+import directory_utils
+import download_utils
 import modes
 import options

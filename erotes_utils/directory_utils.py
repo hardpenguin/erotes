@@ -1,6 +1,6 @@
 import os
 
-class CreatedFolder(object): # folder to be created, needs name
+class Folder(object): # folder to be created, needs name
 
     def __init__(self,Path):
         self.Path=Path
