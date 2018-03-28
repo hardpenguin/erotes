@@ -16,6 +16,9 @@ def ExportLove(WorkDir):
 
     print "Done."
 
+def ExportProject(Platforms,WorkDir):
+    ExportLove(WorkDir)
+
 
 # def ExportLinux():
 # def ExportWindows():
