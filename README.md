@@ -25,8 +25,6 @@ All basic functionalities listed in description are implemented.
 Including a lot of advice from code review by zolnierzfortuny - thanks!
 
 - a release build (using pyinstaller)
-- split erotes_start_project.DownloadAndUnpackLove() into two smaller functions: DownloadLove() and UnpackLove()
-- create erotes_start_project.MoveUnpackedFiles() method that will walk the tree and copy files
 - local copy of templates and config in execution folder
 - support for Windows and macOS development
 - support for Linux, Windows and macOS export
