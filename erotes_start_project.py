@@ -6,7 +6,8 @@ import distutils.file_util
 
 import erotes_utils
 
-def CreateWorkplace(TemplateSource,TemplateName,WorkDir):
+def CreateWorkplace(TemplateSource,WorkDir):
+    TemplateName=TemplateSource.split("/")[-1]
     print "Creating workplace from \""+TemplateName+"\" template..."
     distutils.dir_util.copy_tree(TemplateSource,WorkDir+"/workplace")
     print "Done."
