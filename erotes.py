@@ -11,7 +11,9 @@ import erotes_utils
 ErotesDir=os.path.dirname(os.path.abspath(sys.argv[0])) # where does the script reside
 CurrentDir=os.getcwd() # where is the script executed
 
-ErotesConfig=erotes_utils.config.ConfigFile(ErotesDir+"/config.json").Read() # read the config
+ErotesConfig=erotes_utils.config \
+                         .ConfigFile(ErotesDir+"/config.json") \
+                         .Read() # read the config
 Platforms=ErotesConfig["platforms"]
 Template=ErotesConfig["template"]
 TemplatePath=ErotesDir+"/templates/"+Template
@@ -23,7 +25,8 @@ for Option in erotes_utils.options.Options: # create options
                           Option[1], \
                           Option[2])
 
-Mode=erotes_utils.modes.SelectMode(Arguments) # decide what we're doing
+Mode=erotes_utils.modes \
+                 .SelectMode(Arguments) # decide what we're doing
 
 if (Mode=="start"): # start
     erotes_start_project.CreateWorkplace(TemplatePath,CurrentDir)
