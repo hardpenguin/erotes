@@ -15,8 +15,6 @@ ErotesConfig=erotes_utils.config \
                          .ConfigFile(ErotesDir+"/config.json") \
                          .Read() # read the config
 Platforms=ErotesConfig["platforms"]
-Template=ErotesConfig["template"]
-TemplatePath=ErotesDir+"/templates/"+Template
 
 Arguments=erotes_utils.arguments.Arguments(sys.argv) # read arguments
 
@@ -29,8 +27,7 @@ Mode=erotes_utils.modes \
                  .SelectMode(Arguments) # decide what we're doing
 
 if (Mode=="start"): # start
-    erotes_start_project.CreateWorkplace(TemplatePath,CurrentDir)
-    erotes_start_project.DownloadAndUnpackLove(ErotesConfig,CurrentDir)
+    erotes_start_project.StartProject(ErotesConfig,CurrentDir)
 
 elif (Mode=="run"): # run
     erotes_run_project.RunWorkplace(CurrentDir)
