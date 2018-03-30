@@ -46,7 +46,8 @@ Starting and running the project is already implemented. Export is limited to .l
 ## Todo
 
 - bundle libarchive with the erotes pyinstaller build
-- first release build
+- add packaging source and builds to build process
+- first release (source and Linux build)
 - versioning for erotes
 - support for Windows and macOS development
 - support for Linux, Windows and macOS export
