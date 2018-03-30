@@ -41,11 +41,13 @@ Run:
 
 ## Status
 
-All basic functionalities listed in description are implemented.
+Starting and running the project is already implemented. Export is limited to .love file for now.
 
 ## Todo
 
-- bundle libarchive with the pyinstaller build
+- bundle libarchive with the erotes pyinstaller build
+- first release build
+- versioning for erotes
 - support for Windows and macOS development
 - support for Linux, Windows and macOS export
 - naming and versioning LÖVE project
