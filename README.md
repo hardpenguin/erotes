@@ -48,6 +48,7 @@ All basic functionalities listed in description are implemented.
 - bundle libarchive with the pyinstaller build
 - support for Windows and macOS development
 - support for Linux, Windows and macOS export
+- naming and versioning LÖVE project
 - Linux LÖVE dependencies
 - tests
 - GUI (optional)
