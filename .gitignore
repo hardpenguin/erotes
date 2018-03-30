@@ -11,6 +11,7 @@ downloads/
 export/
 
 # pyinstaller
-build/
+pyinstaller/
+
+# build
 dist/
-erotes.spec

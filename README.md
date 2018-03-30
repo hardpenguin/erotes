@@ -6,6 +6,19 @@
 - running the development version of the project
 - exporting the project to .love file as well as Linux and Windows executable format
 
+## Usage
+
+```
+Syntax:
+ erotes [options]
+
+Available options:
+  -s,    --start               starts the new project                  
+  -r,    --run                 runs the project currently in development
+  -e,    --export              exports the currently developed project 
+```
+
+
 ## Dependencies
 
 - python2.7
@@ -14,7 +27,17 @@
 
 On Ubuntu 16.04, these dependencies can be installed by running:
 
-```sudo apt-get install python2.7 libarchive13 python-libarchive-c``` 
+```sudo apt-get install python2.7 libarchive13 python-libarchive-c```
+
+To build the project you also need [pyinstaller](https://www.pyinstaller.org/). It has to be installed using pip:
+
+```pip install pyinstaller```
+
+## Building
+
+Run:
+
+```./build.py``` 
 
 ## Status
 
@@ -22,11 +45,9 @@ All basic functionalities listed in description are implemented.
 
 ## Todo
 
-Including a lot of advice from code review by zolnierzfortuny - thanks!
-
-- a release build (using pyinstaller)
-- local copy of templates and config in execution folder
+- bundle libarchive with the pyinstaller build
 - support for Windows and macOS development
 - support for Linux, Windows and macOS export
+- Linux LÖVE dependencies
 - tests
 - GUI (optional)
