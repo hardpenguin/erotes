@@ -47,7 +47,7 @@ for Each in SingleFiles:
 
 for Each in Folders:
     distutils.dir_util \
-             .copy_tree(Each,DistributablePath)
+             .copy_tree(Each,DistributablePath+"/"+Each)
 
 
 print "Done."

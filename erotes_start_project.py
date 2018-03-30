@@ -44,8 +44,8 @@ def UnpackLove(PackageName,Platform,PlatformPath):
                     .ArchiveFile(TargetPath+"/data.tar.xz") \
                     .Unpack()
 
-def CopyRuntime(Platform,PlatformPath):
-    for Root, Dirs, Files in os.walk(PlatformPath):
+def CopyRuntime(Platform,SourcePath,PlatformPath):
+    for Root, Dirs, Files in os.walk(SourcePath):
         for File in Files:
             if "linux" in Platform:
                 if ("/usr/bin" in Root) or ("/usr/lib" in Root):
@@ -74,6 +74,6 @@ def StartProject(ErotesConfig,WorkDir):
             if Link["platform"]==Platform:
                 FileDownloaded=DownloadLove(Link,Platform,DownloadsPlatformPath)
                 UnpackLove(FileDownloaded,Platform,DownloadsPlatformPath)
-                CopyRuntime(Platform,LovePlatformPath)
+                CopyRuntime(Platform,DownloadsPlatformPath,LovePlatformPath)
 
     print "Done."
