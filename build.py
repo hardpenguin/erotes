@@ -10,6 +10,22 @@ import erotes_utils
 ErotesDir=os.path.dirname(os.path.abspath(sys.argv[0]))
 os.chdir(ErotesDir)
 
+Options=sys.argv[1:]
+if len(Options)<1:
+    print "Building in regular mode..."
+    Mode="regular"
+elif "--release" in Options:
+    print "Building in release mode..."
+    Mode="release"
+else:
+    print "Unknown option!"
+    sys.exit()
+
+ReleaseVersion="1.0"
+BuildVersion=erotes_utils.versioning \
+                         .Version("version") \
+                         .GenerateVersion(ReleaseVersion)
+
 PyInstallerExecutable="pyinstaller"
 PyInstallerWorkPath="./pyinstaller/build"
 PyInstallerDistPath="./pyinstaller/dist"
@@ -48,6 +64,16 @@ for Each in SingleFiles:
 for Each in Folders:
     distutils.dir_util \
              .copy_tree(Each,DistributablePath+"/"+Each)
+
+if Mode=="release":
+    print "Packaging distributable..."
+    os.chdir(DistributablePath)
+    List=os.listdir(".")
+    LinuxDistPackageName=ErotesDir+"/erotes-linux-"+BuildVersion+".tar.gz"
+    LinuxDistPackage=erotes_utils.archive \
+                                 .ArchiveFile(LinuxDistPackageName) \
+                                 .PackageFiles(List,"ustar","gzip")
+
 
 
 print "Done."
