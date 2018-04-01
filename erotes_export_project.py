@@ -2,10 +2,12 @@
 
 import os
 import libarchive
+import distutils.file_util
+import shutil
 
 import erotes_utils
 
-def ExportLove(WorkDir):
+def ExportLove(WorkDir,ProjectName):
     os.chdir(WorkDir+"/workplace")
     List=os.listdir('.')
     ExportPath=erotes_utils.directory_utils \
@@ -14,21 +16,59 @@ def ExportLove(WorkDir):
 
     print "Creating .love file..."
     LoveFile=erotes_utils.archive \
-                         .ArchiveFile(ExportPath+"/game.love") \
+                         .ArchiveFile(ExportPath+"/"+ProjectName+".love") \
                          .PackageFiles(List) # create .love file
 
     print "Done."
 
+    return(LoveFile)
+
+def ExportLinux(WorkDir,ProjectName):
+    ExportPath=WorkDir+"/export/"
+    LinuxLovePath=WorkDir+"/love/linux64/"
+    LinuxLoveFiles=os.listdir(LinuxLovePath)
+    LinuxLoveBinary=ExportPath+"love"
+    LinuxGameBinary=ExportPath+ProjectName
+    LoveFile=ExportPath+ProjectName+".love"
+
+    print "Creating Linux export..."
+    for Each in LinuxLoveFiles:
+        CurrentFile=LinuxLovePath+Each
+        if os.path.islink(CurrentFile):
+            erotes_utils.symlink_utils \
+                        .Symlink(ExportPath+"/"+Each) \
+                        .Create(CurrentFile)
+        else:
+            distutils.file_util \
+                     .copy_file(LinuxLovePath+Each,ExportPath)
+
+    erotes_utils.concatenation \
+                .Object(LinuxGameBinary) \
+                .Concatenate(LinuxLoveBinary, \
+                  LoveFile)
+
+    os.chmod(LinuxGameBinary, 0775)
+
+    # ToPackage=LinuxLoveFiles
+    # ToPackage.append(LinuxGameBinary)
+
+    # LinuxPackage=erotes_utils.archive \
+    #                          .ArchiveFile(ExportPath+"/"+ProjectName+"-linux64.zip") \
+    #                          .PackageFiles(ToPackage)
+
+    # for Each in ToPackage:
+    #     os.remove(ExportPath+Each)
+
+    print "Done."    
+
+def ExportWindows(WorkDir,ProjectName):
+    pass
+
 def ExportProject(Platforms,WorkDir):
-    ExportLove(WorkDir)
+    ProjectName="game"
+    ExportLove(WorkDir,ProjectName)
 
-
-# def ExportLinux():
-# def ExportWindows():
-
-    """if "linux64" in Platforms: # create Linux build
-                    with open("binary_file_1", "ab") as myfile, open("binary_file_2", "rb") as file2:
-                        myfile.write(file2.read())
-            
-                elif "windows32" in Platforms: # create Windows build
-                    """
+    if "linux64" in Platforms:
+        ExportLinux(WorkDir,ProjectName)
+    elif "windows32" in Platforms:
+        ExportWindows(WorkDir,ProjectName)

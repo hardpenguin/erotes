@@ -47,14 +47,21 @@ def UnpackLove(PackageName,Platform,PlatformPath):
 def CopyRuntime(Platform,SourcePath,PlatformPath):
     for Root, Dirs, Files in os.walk(SourcePath):
         for File in Files:
+            CurrentFile=Root+"/"+File
             if "linux" in Platform:
                 if ("/usr/bin" in Root) or ("/usr/lib" in Root):
-                    distutils.file_util \
-                             .copy_file(Root+"/"+File,PlatformPath)
+                    if os.path.islink(CurrentFile):
+                        erotes_utils.symlink_utils \
+                                    .Symlink(PlatformPath+"/"+File) \
+                                    .Create(CurrentFile)
+                    else:
+                        distutils.file_util \
+                                 .copy_file(CurrentFile,PlatformPath)
+
             elif "windows" in Platform:
                 if ("love.exe" in Files):
                     distutils.file_util \
-                             .copy_file(Root+"/"+File,PlatformPath)
+                             .copy_file(CurrentFile,PlatformPath)
                 
 
 def StartProject(ErotesConfig,WorkDir):
