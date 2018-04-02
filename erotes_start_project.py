@@ -14,9 +14,6 @@ def CreateWorkplace(TemplateSource,WorkDir):
     distutils.dir_util \
              .copy_tree(TemplateSource,WorkplacePath)
 
-    print "Done."
-
-
 def DownloadLove(Link,Platform,PlatformPath):
     DownloadedPackage=erotes_utils.download_utils \
                                   .Downloadable(Link["link"])

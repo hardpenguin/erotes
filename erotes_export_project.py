@@ -19,56 +19,65 @@ def ExportLove(WorkDir,ProjectName):
                          .ArchiveFile(ExportPath+"/"+ProjectName+".love") \
                          .PackageFiles(List) # create .love file
 
-    print "Done."
-
     return(LoveFile)
 
-def ExportLinux(WorkDir,ProjectName):
+def ExportPlatform(WorkDir,ProjectName,Platform):
     ExportPath=WorkDir+"/export/"
-    LinuxLovePath=WorkDir+"/love/linux64/"
-    LinuxLoveFiles=os.listdir(LinuxLovePath)
-    LinuxLoveBinary=ExportPath+"love"
-    LinuxGameBinary=ExportPath+ProjectName
+    LovePath=WorkDir+"/love/"+Platform+"/"
+    LoveFiles=os.listdir(LovePath)
+    if "linux" in Platform:
+        LoveBinary="love"
+    elif "windows" in Platform:
+        LoveBinary="love.exe"
+    LoveBinaryPath=ExportPath+LoveBinary
+    if "linux" in Platform:
+        GameBinary=ProjectName
+    elif "windows" in Platform:
+        GameBinary=ProjectName+".exe"
+    GameBinaryPath=ExportPath+GameBinary
     LoveFile=ExportPath+ProjectName+".love"
 
-    print "Creating Linux export..."
-    for Each in LinuxLoveFiles:
-        CurrentFile=LinuxLovePath+Each
+    print "Creating "+Platform+" export..."
+    for Each in LoveFiles:
+        CurrentFile=LovePath+Each
         if os.path.islink(CurrentFile):
             erotes_utils.symlink_utils \
                         .Symlink(ExportPath+"/"+Each) \
                         .Create(CurrentFile)
         else:
             distutils.file_util \
-                     .copy_file(LinuxLovePath+Each,ExportPath)
+                     .copy_file(LovePath+Each,ExportPath)
 
     erotes_utils.concatenation \
-                .Object(LinuxGameBinary) \
-                .Concatenate(LinuxLoveBinary, \
+                .Object(GameBinaryPath) \
+                .Concatenate(LoveBinaryPath, \
                   LoveFile)
 
-    os.chmod(LinuxGameBinary, 0775)
+    if "linux" in Platform:
+        os.chmod(GameBinaryPath, 0775)
 
-    # ToPackage=LinuxLoveFiles
-    # ToPackage.append(LinuxGameBinary)
+    ToPackage=list(LoveFiles)
+    ToPackage.append(GameBinary)
+    ToRemove=list(ToPackage)
+    ToPackage.remove(LoveBinary)
+    PackagePath=ExportPath+"/"+ProjectName+"-"+Platform+".zip"
 
-    # LinuxPackage=erotes_utils.archive \
-    #                          .ArchiveFile(ExportPath+"/"+ProjectName+"-linux64.zip") \
-    #                          .PackageFiles(ToPackage)
+    os.chdir(ExportPath)
+    ExportPackage=erotes_utils.archive \
+                              .ArchiveFile(PackagePath) \
+                              .PackageFiles(ToPackage)
 
-    # for Each in ToPackage:
-    #     os.remove(ExportPath+Each)
-
-    print "Done."    
-
-def ExportWindows(WorkDir,ProjectName):
-    pass
+    for Each in ToRemove:
+        os.remove(ExportPath+Each)    
 
 def ExportProject(Platforms,WorkDir):
+    print "Starting exports..."
     ProjectName="game"
     ExportLove(WorkDir,ProjectName)
 
     if "linux64" in Platforms:
-        ExportLinux(WorkDir,ProjectName)
-    elif "windows32" in Platforms:
-        ExportWindows(WorkDir,ProjectName)
+        ExportPlatform(WorkDir,ProjectName,"linux64")
+    if "windows32" in Platforms:
+        ExportPlatform(WorkDir,ProjectName,"windows32")
+
+    print "Done."

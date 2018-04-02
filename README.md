@@ -22,16 +22,15 @@ Available options:
 ## Dependencies
 
 - python2.7
-- python-libarchive-c
 - libarchive
+- python-libarchive-c
+- pyinstaller (for building)
 
 On Ubuntu 16.04, these dependencies can be installed by running:
 
-```sudo apt-get install python2.7 libarchive13 python-libarchive-c```
+```sudo apt-get install python2.7 libarchive13```
 
-To build the project you also need [pyinstaller](https://www.pyinstaller.org/). It has to be installed using pip:
-
-```pip install pyinstaller```
+```pip install libarchive-c pyinstaller```
 
 ## Building
 
@@ -41,13 +40,13 @@ Run:
 
 ## Status
 
-Starting and running the project is already implemented. Export is limited to .love file for now.
+Starting, running and exporting the project are all already implemented. Needs working out the details.
 
 ## Todo
 
 - bundle libarchive with the erotes pyinstaller build
 - support for Windows and macOS development
-- support for Linux, Windows and macOS export
+- support for macOS export
 - naming and versioning LÖVE project
 - Linux LÖVE dependencies
 - tests
