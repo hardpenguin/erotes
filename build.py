@@ -21,7 +21,7 @@ else:
     print "Unknown option!"
     sys.exit()
 
-ReleaseVersion="1.0"
+ReleaseVersion="1.1"
 BuildVersion=erotes_utils.versioning \
                          .Version("version") \
                          .GenerateVersion(ReleaseVersion)

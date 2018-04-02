@@ -6,4 +6,9 @@ class Object(object): # archive to be unpacked
         self.FilePath=FilePath
 
     def Concatenate(self,Input1,Input2):
-        os.system("cat "+Input1+" "+Input2+" >"+self.FilePath)
+        with open(self.FilePath, "wb") as OutFile:
+            for Part in [Input1,Input2]:
+                with open(Part, "rb") as InFile:
+                    OutFile.write(InFile.read())
+                InFile.close()
+        OutFile.close()

@@ -44,6 +44,7 @@ Starting, running and exporting the project are all already implemented. Needs w
 
 ## Todo
 
+- update everything to work with LÖVE 11.0
 - bundle libarchive with the erotes pyinstaller build
 - support for Windows and macOS development
 - support for macOS export
