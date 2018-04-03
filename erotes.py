@@ -33,7 +33,7 @@ elif (Mode=="run"): # run
     erotes_run_project.RunWorkplace(CurrentDir)
 
 elif (Mode=="export"): # export
-    erotes_export_project.ExportProject(Platforms,CurrentDir)
+    erotes_export_project.ExportProject(ErotesConfig,CurrentDir)
 
 else: # help
     Arguments.DisplayHelp()

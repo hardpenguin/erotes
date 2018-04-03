@@ -3,25 +3,27 @@
 import os
 import libarchive
 import distutils.file_util
-import shutil
+import re
 
 import erotes_utils
 
-def ExportLove(WorkDir,ProjectName):
+def ExportLove(WorkDir,NameString,VersionString):
     os.chdir(WorkDir+"/workplace")
     List=os.listdir('.')
     ExportPath=erotes_utils.directory_utils \
                            .Folder(WorkDir+"/export") \
                            .Create()
 
+    LoveFilePath=ExportPath+"/"+NameString+"_"+VersionString+".love"
+
     print "Creating .love file..."
     LoveFile=erotes_utils.archive \
-                         .ArchiveFile(ExportPath+"/"+ProjectName+".love") \
+                         .ArchiveFile(LoveFilePath) \
                          .PackageFiles(List) # create .love file
 
     return(LoveFile)
 
-def ExportPlatform(WorkDir,ProjectName,Platform):
+def ExportPlatform(WorkDir,NameString,VersionString,Platform):
     ExportPath=WorkDir+"/export/"
     LovePath=WorkDir+"/love/"+Platform+"/"
     LoveFiles=os.listdir(LovePath)
@@ -31,11 +33,11 @@ def ExportPlatform(WorkDir,ProjectName,Platform):
         LoveBinary="love.exe"
     LoveBinaryPath=ExportPath+LoveBinary
     if "linux" in Platform:
-        GameBinary=ProjectName
+        GameBinary=NameString
     elif "windows" in Platform:
-        GameBinary=ProjectName+".exe"
+        GameBinary=NameString+".exe"
     GameBinaryPath=ExportPath+GameBinary
-    LoveFile=ExportPath+ProjectName+".love"
+    LoveFile=ExportPath+NameString+"_"+VersionString+".love"
 
     print "Creating "+Platform+" export..."
     for Each in LoveFiles:
@@ -60,7 +62,7 @@ def ExportPlatform(WorkDir,ProjectName,Platform):
     ToPackage.append(GameBinary)
     ToRemove=list(ToPackage)
     ToPackage.remove(LoveBinary)
-    PackagePath=ExportPath+"/"+ProjectName+"-"+Platform+".zip"
+    PackagePath=ExportPath+"/"+NameString+"_"+VersionString+"_"+Platform+".zip"
 
     os.chdir(ExportPath)
     ExportPackage=erotes_utils.archive \
@@ -70,14 +72,18 @@ def ExportPlatform(WorkDir,ProjectName,Platform):
     for Each in ToRemove:
         os.remove(ExportPath+Each)    
 
-def ExportProject(Platforms,WorkDir):
+def ExportProject(ErotesConfig,WorkDir):
     print "Starting exports..."
-    ProjectName="game"
-    ExportLove(WorkDir,ProjectName)
+    ProjectName=ErotesConfig["name"]
+    ProjectVersion=ErotesConfig["version"]
+    NameString=re.sub("[^0-9a-zA-Z]+","_",ProjectName).lower()
+    VersionString=re.sub("[^0-9a-zA-Z]+","_",ProjectVersion)
+    Platforms=ErotesConfig["platforms"]
+    ExportLove(WorkDir,NameString,VersionString)
 
     if "linux64" in Platforms:
-        ExportPlatform(WorkDir,ProjectName,"linux64")
+        ExportPlatform(WorkDir,NameString,VersionString,"linux64")
     if "windows32" in Platforms:
-        ExportPlatform(WorkDir,ProjectName,"windows32")
+        ExportPlatform(WorkDir,NameString,VersionString,"windows32")
 
     print "Done."

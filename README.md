@@ -48,7 +48,6 @@ Starting, running and exporting the project are all already implemented. Needs w
 - bundle libarchive with the erotes pyinstaller build
 - support for Windows and macOS development
 - support for macOS export
-- naming and versioning LÖVE project
 - Linux LÖVE dependencies
 - tests
 - GUI (optional)

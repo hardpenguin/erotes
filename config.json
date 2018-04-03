@@ -1,4 +1,6 @@
 {
+    "name": "Template Game",
+    "version": "1.0",
     "platforms": ["linux64", "windows32"],
     "template": "default",
     "links": [
