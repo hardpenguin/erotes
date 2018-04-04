@@ -45,6 +45,8 @@ Starting, running and exporting the project are all already implemented. Needs w
 ## Todo
 
 - update everything to work with LÖVE 11.0
+- platform exports should put game files into folder before packaging
+- export project files that aren't in .love file to platform exports (like readme)
 - bundle libarchive with the erotes pyinstaller build
 - support for Windows and macOS development
 - support for macOS export

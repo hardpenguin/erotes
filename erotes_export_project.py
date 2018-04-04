@@ -8,8 +8,12 @@ import re
 import erotes_utils
 
 def ExportLove(WorkDir,NameString,VersionString):
+    Blacklisted=[".git",".gitignore"]
     os.chdir(WorkDir+"/workplace")
     List=os.listdir('.')
+    for Each in Blacklisted:
+        if Each in List:
+            List.remove(Each)
     ExportPath=erotes_utils.directory_utils \
                            .Folder(WorkDir+"/export") \
                            .Create()
