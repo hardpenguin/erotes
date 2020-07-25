@@ -1,7 +1,11 @@
+# Python
+*.pyc
+__pycache__
+
+# deliverables
 *.deb
 *.exe
 *.zip
-*.pyc
 *.love
 
 # chosen subdirectories
