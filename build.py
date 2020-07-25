@@ -19,7 +19,7 @@ else:
     print("Unknown option!")
     sys.exit(0)
 
-release_version = "1.1"
+release_version = "1.2"
 build_version = versioning.Version("version")
 build_version.generate_version(release_version)
 
