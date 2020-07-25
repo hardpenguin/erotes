@@ -3,89 +3,99 @@ import libarchive
 import distutils.file_util
 import re
 
-import utils
+from utils import directory_utils, archive, symlink_utils, concatenation
 
-def ExportLove(WorkDir,NameString,VersionString):
-    Blacklisted=[".git",".gitignore"]
-    os.chdir(WorkDir+"/workplace")
-    List=os.listdir('.')
-    for Each in Blacklisted:
-        if Each in List:
-            List.remove(Each)
-    ExportPath=utils.directory_utils \
-                           .Folder(WorkDir+"/export") \
-                           .Create()
+def export_love(work_dir, name_str, version_str):
+    denied = [
+                ".git",
+                ".gitignore"
+            ]
+    workplace_path = "%s/workplace" % work_dir
+    os.chdir(workplace_path)
 
-    LoveFilePath=ExportPath+"/"+NameString+"_"+VersionString+".love"
+    l = os.listdir('.')
+    for each in denied:
+        if each in l:
+            l.remove(each)
 
-    print "Creating .love file..."
-    LoveFile=utils.archive \
-                         .ArchiveFile(LoveFilePath) \
-                         .PackageFiles(List) # create .love file
+    export_path = "%s/export" % work_dir
+    export_folder = directory_utils.Folder(export_path)
+    export_folder.create()
 
-    return(LoveFile)
+    love_file_path = "%s/%s_%s.love" % (export_path, name_str, version_str)
 
-def ExportPlatform(WorkDir,NameString,VersionString,Platform):
-    ExportPath=WorkDir+"/export/"
-    LovePath=WorkDir+"/love/"+Platform+"/"
-    LoveFiles=os.listdir(LovePath)
-    if "linux" in Platform:
-        LoveBinary="love"
-    elif "windows" in Platform:
-        LoveBinary="love.exe"
-    LoveBinaryPath=ExportPath+LoveBinary
-    if "linux" in Platform:
-        GameBinary=NameString
-    elif "windows" in Platform:
-        GameBinary=NameString+".exe"
-    GameBinaryPath=ExportPath+GameBinary
-    LoveFile=ExportPath+NameString+"_"+VersionString+".love"
+    print("Creating .love file...")
 
-    print "Creating "+Platform+" export..."
-    for Each in LoveFiles:
-        CurrentFile=LovePath+Each
-        if os.path.islink(CurrentFile):
-            utils.symlink_utils \
-                        .Symlink(ExportPath+"/"+Each) \
-                        .Create(CurrentFile)
+    love_archive = archive.Archive(love_file_path)
+    love_archive.package_files(l)
+
+def export_platform(work_dir, name_str, version_str, platform):
+    export_path = "%s/export/" % work_dir
+    love_path = "%s/love/%s/" % (work_dir, platform)
+    love_files = os.listdir(love_path)
+
+    if "linux" in platform:
+        love_binary = "love"
+    elif "windows" in platform:
+        love_binary = "love.exe"
+    love_binary_path = "%s%s" % (export_path, love_binary)
+
+    if "linux" in platform:
+        game_binary = name_str
+    elif "windows" in platform:
+        game_binary = "%s.exe" % name_str
+    game_binary_path = "%s%s" % (export_path, game_binary)
+
+    love_file = "%s%s_%s.love" % (export_path, name_str, version_str)
+
+    print("Creating %s export..." % platform)
+    for each in love_files:
+        current_file = "%s%s" % (love_path, each)
+        if os.path.islink(current_file):
+            symlink_path = "%s/%s" % (export_path, each)
+            new_symlink = symlink_utils.Symlink(symlink_path)
+            new_symlink.Create(current_file)
         else:
-            distutils.file_util \
-                     .copy_file(LovePath+Each,ExportPath)
+            love_subfile = "%s%s" % (love_path, each)
+            distutils.file_util.copy_file(love_subfile,export_path)
 
-    utils.concatenation \
-                .Object(GameBinaryPath) \
-                .Concatenate(LoveBinaryPath, \
-                  LoveFile)
+    concatenated_binary = concatenation.Object(game_binary_path)
+    concatenated_binary.concatenate(love_binary_path, love_file)
 
-    if "linux" in Platform:
-        os.chmod(GameBinaryPath, 0775)
+    if "linux" in platform:
+        os.chmod(game_binary_path, 0o775)
 
-    ToPackage=list(LoveFiles)
-    ToPackage.append(GameBinary)
-    ToRemove=list(ToPackage)
-    ToPackage.remove(LoveBinary)
-    PackagePath=ExportPath+"/"+NameString+"_"+VersionString+"_"+Platform+".zip"
+    to_package = list(love_files)
+    to_package.append(game_binary)
+    to_remove = list(to_package)
+    to_package.remove(love_binary)
 
-    os.chdir(ExportPath)
-    ExportPackage=utils.archive \
-                              .ArchiveFile(PackagePath) \
-                              .PackageFiles(ToPackage)
+    package_path = "%s/%s_%s_%s.zip" % (export_path,
+                                        name_str,
+                                        version_str,
+                                        platform)
 
-    for Each in ToRemove:
-        os.remove(ExportPath+Each)    
+    os.chdir(export_path)
+    export_package = archive.Archive(package_path)
+    export_package.package_files(to_package)
 
-def ExportProject(ErotesConfig,WorkDir):
-    print "Starting exports..."
-    ProjectName=ErotesConfig["name"]
-    ProjectVersion=ErotesConfig["version"]
-    NameString=re.sub("[^0-9a-zA-Z]+","_",ProjectName).lower()
-    VersionString=re.sub("[^0-9a-zA-Z]+","_",ProjectVersion)
-    Platforms=ErotesConfig["platforms"]
-    ExportLove(WorkDir,NameString,VersionString)
+    for each in to_remove:
+        removed_file_path = "%s%s" % (export_path, each)
+        os.remove(removed_file_path)    
 
-    if "linux64" in Platforms:
-        ExportPlatform(WorkDir,NameString,VersionString,"linux64")
-    if "windows32" in Platforms:
-        ExportPlatform(WorkDir,NameString,VersionString,"windows32")
+def export_project(config, work_dir):
+    print("Starting exports...")
+    project_name = config["name"]
+    project_version = config["version"]
+    name_str = re.sub("[^0-9a-zA-Z]+", "_", project_name)
+    name_str = name_str.lower()
+    version_str = re.sub("[^0-9a-zA-Z]+", "_", project_version)
+    platforms = config["platforms"]
+    export_love(work_dir, name_str, version_str)
 
-    print "Done."
+    if "linux64" in platforms:
+        export_platform(work_dir, name_str, version_str, "linux64")
+    if "windows32" in platforms:
+        export_platform(work_dir, name_str, version_str, "windows32")
+
+    print("Done.")

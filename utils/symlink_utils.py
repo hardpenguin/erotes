@@ -1,6 +1,6 @@
 import os
 
-class Symlink(object): # archive to be unpacked
+class Symlink(object):
     
     def __init__(self, path):
         self.path = path

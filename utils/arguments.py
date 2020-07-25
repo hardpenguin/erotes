@@ -1,6 +1,6 @@
 import os
 
-class Arguments(object): # command line arguments given
+class Arguments(object):
     
     def __init__(self, args):
         self.args = args

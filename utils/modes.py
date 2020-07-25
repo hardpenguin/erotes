@@ -1,6 +1,6 @@
 import sys
 
-def select_mode(arg_list): # which routine should be ran?
+def select_mode(arg_list):
     
     if len(arg_list.args) < 2:
         arg_list.display_help()

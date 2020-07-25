@@ -2,7 +2,7 @@ import os
 import distutils.dir_util
 import distutils.file_util
 
-import utils
+from utils import download_utils, directory_utils, archive, symlink_utils
 
 def create_workplace(template_source, work_dir):
     template_name = template_source.split("/")[-1]
@@ -13,7 +13,7 @@ def create_workplace(template_source, work_dir):
                                 workplace_path)
 
 def download_love(link, platform, platform_path):
-    package = utils.download_utils.Downloadable(link["link"])
+    package = download_utils.Downloadable(link["link"])
     destination = "%s/%s" % (platform_path, package.name)
 
     print("Downloading %s..." % package.name)
@@ -28,17 +28,17 @@ def unpack_love(package_name, platform, platform_path):
 
     target_path = "%s/%s" % (platform_path, package_basename)
 
-    utils.directory_utils.Folder(target_path).create()
+    directory_utils.Folder(target_path).create()
 
     os.chdir(target_path)
 
     print("Unpacking %s..." % package_name)
     archive_path = "%s/%s" % (platform_path, package_name)
-    utils.archive.Archive(archive_path).unpack()
+    archive.Archive(archive_path).unpack()
 
     if "linux" in platform:
         linux_archive_path = "%s/data.tar.xz" % target_path
-        utils.archive.Archive(linux_archive_path).unpack()
+        archive.Archive(linux_archive_path).unpack()
 
 def copy_runtime(platform, source_path, platform_path):
     for root, dirs, files in os.walk(source_path):
@@ -48,7 +48,7 @@ def copy_runtime(platform, source_path, platform_path):
                 if ("/usr/bin" in root) or ("/usr/lib" in root):
                     if os.path.islink(current_file):
                         symlink_path = platform_path+"/"+f
-                        new_symlink = utils.symlink_utils.Symlink(symlink_path)
+                        new_symlink = symlink_utils.Symlink(symlink_path)
                         new_symlink.create(current_file)
                     else:
                         distutils.file_util.copy_file(current_file,
@@ -68,11 +68,11 @@ def start_project(config, work_dir):
 
     for platform in config["platforms"]:
         downloads_path = "%s/downloads/%s" % (work_dir, platform)
-        downloads_folder = utils.directory_utils.Folder(downloads_path)
+        downloads_folder = directory_utils.Folder(downloads_path)
         downloads_folder.create()
 
         love_path = "%s/love/%s" % (work_dir, platform)
-        love_folder = utils.directory_utils.Folder(love_path)
+        love_folder = directory_utils.Folder(love_path)
         love_folder.Create()
 
         for link in config["links"]:

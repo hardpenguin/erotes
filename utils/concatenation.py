@@ -1,14 +1,15 @@
 import os
 
-class Object(object): # archive to be unpacked
+class Object(object):
     
-    def __init__(self,FilePath):
-        self.FilePath=FilePath
+    def __init__(self, file_path):
+        self.file_path = file_path
 
-    def Concatenate(self,Input1,Input2):
-        with open(self.FilePath, "wb") as OutFile:
-            for Part in [Input1,Input2]:
-                with open(Part, "rb") as InFile:
-                    OutFile.write(InFile.read())
-                InFile.close()
-        OutFile.close()
+    def concatenate(self, input1, input2):
+        with open(self.file_path, "wb") as out_file:
+            for part in [input1, input2]:
+                with open(part, "rb") as in_file:
+                    in_file_contents = in_file.read()
+                    out_file.write(in_file_contents)
+                in_file.close()
+        out_file.close()

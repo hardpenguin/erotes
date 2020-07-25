@@ -1,6 +1,6 @@
 import libarchive
 
-class Archive(object): # archive to be unpacked
+class Archive(object):
     
     def __init__(self, file_path):
         self.file_path = file_path
@@ -10,15 +10,17 @@ class Archive(object): # archive to be unpacked
 
     def package_files(self,
                     files_list,
-                    format="zip",
-                    format2=""):
-        if format == "zip":
-            with libarchive.file_writer(self.file_path, format) as package:
-              for every in (files_list):
-                package.add_files(every)
-        elif format == "ustar" and format2 == "gzip":
+                    archive_format="zip",
+                    archive_format2=""):
+        if archive_format == "zip":
             with libarchive.file_writer(self.file_path,
-                                        format,
-                                        format2) as package:
-              for every in (files_list):
-                package.add_files(every)
+                                        archive_format) as package:
+                for every in (files_list):
+                    package.add_files(every)
+        elif (archive_format == "ustar" and 
+                archive_format2 == "gzip"):
+            with libarchive.file_writer(self.file_path,
+                                        archive_format,
+                                        archive_format2) as package:
+                for every in (files_list):
+                    package.add_files(every)
