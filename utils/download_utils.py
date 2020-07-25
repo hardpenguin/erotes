@@ -1,4 +1,4 @@
-import urllib
+import urllib.request
 
 class Downloadable(object):
     
@@ -9,6 +9,6 @@ class Downloadable(object):
         self.name = self.link.split("/")[-1]
 
     def download(self, destination):
-        urllib.urlretrieve(self.link, destination)
+        urllib.request.urlretrieve(self.link, destination)
         # I gave up on handling download errors
         # as bitbucket willingly serves a HTML file for wrong links

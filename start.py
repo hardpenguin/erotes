@@ -61,21 +61,21 @@ def copy_runtime(platform, source_path, platform_path):
                 
 
 def start_project(config, work_dir):
-    template = config["template"]
+    template = config.contents["template"]
     template_path = "%s/templates/%s" % (work_dir,
                                         template)
     create_workplace(template_path, work_dir)
 
-    for platform in config["platforms"]:
+    for platform in config.contents["platforms"]:
         downloads_path = "%s/downloads/%s" % (work_dir, platform)
         downloads_folder = directory_utils.Folder(downloads_path)
         downloads_folder.create()
 
         love_path = "%s/love/%s" % (work_dir, platform)
         love_folder = directory_utils.Folder(love_path)
-        love_folder.Create()
+        love_folder.create()
 
-        for link in config["links"]:
+        for link in config.contents["links"]:
             os.chdir(work_dir)
             if link["platform"] == platform:
                 file_downloaded = download_love(link,

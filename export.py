@@ -85,12 +85,12 @@ def export_platform(work_dir, name_str, version_str, platform):
 
 def export_project(config, work_dir):
     print("Starting exports...")
-    project_name = config["name"]
-    project_version = config["version"]
+    project_name = config.contents["name"]
+    project_version = config.contents["version"]
     name_str = re.sub("[^0-9a-zA-Z]+", "_", project_name)
     name_str = name_str.lower()
     version_str = re.sub("[^0-9a-zA-Z]+", "_", project_version)
-    platforms = config["platforms"]
+    platforms = config.contents["platforms"]
     export_love(work_dir, name_str, version_str)
 
     if "linux64" in platforms:
