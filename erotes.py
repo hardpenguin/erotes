@@ -1,39 +1,36 @@
-#!/usr/bin/python2.7
-
 import os
 import sys
 
-import erotes_start_project
-import erotes_run_project
-import erotes_export_project
-import erotes_utils
+import start
+import run
+import export
+from utils import config, arguments, options, modes
 
-ErotesDir=os.path.dirname(os.path.abspath(sys.argv[0])) # where does the script reside
-CurrentDir=os.getcwd() # where is the script executed
+erotes_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+current_dir = os.getcwd()
 
-ErotesConfig=erotes_utils.config \
-                         .ConfigFile(ErotesDir+"/config.json") \
-                         .Read() # read the config
-Platforms=ErotesConfig["platforms"]
+config_file_path = "%s/config.json" % erotes_dir
+config = config.Config(config_file_path)
 
-Arguments=erotes_utils.arguments.Arguments(sys.argv) # read arguments
+arguments = arguments.Arguments(sys.argv)
 
-for Option in erotes_utils.options.Options: # create options
-    Arguments.AddArgument(Option[0], \
-                          Option[1], \
-                          Option[2])
+for option in options.Options:
+    arguments.add_argument(
+                            option[0],
+                            option[1],
+                            option[2]
+                            )
 
-Mode=erotes_utils.modes \
-                 .SelectMode(Arguments) # decide what we're doing
+mode = modes.select_mode(arguments)
 
-if (Mode=="start"): # start
-    erotes_start_project.StartProject(ErotesConfig,CurrentDir)
+if (mode == "start"):
+    start.start_project(config, current_dir)
 
-elif (Mode=="run"): # run
-    erotes_run_project.RunWorkplace(CurrentDir)
+elif (mode == "run"):
+    run.run_workplace(current_dir)
 
-elif (Mode=="export"): # export
-    erotes_export_project.ExportProject(ErotesConfig,CurrentDir)
+elif (mode == "export"):
+    export.export_project(config, current_dir)
 
-else: # help
-    Arguments.DisplayHelp()
+else:
+    arguments.display_help()

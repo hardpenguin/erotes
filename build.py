@@ -1,79 +1,76 @@
-#!/usr/bin/python2.7
-
 import os
 import sys
 import distutils.dir_util
 import distutils.file_util
 
-import erotes_utils
+from utils import versioning, directory_utils, archive
 
-ErotesDir=os.path.dirname(os.path.abspath(sys.argv[0]))
-os.chdir(ErotesDir)
+erotes_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+os.chdir(erotes_dir)
 
-Options=sys.argv[1:]
-if len(Options)<1:
-    print "Building in regular mode..."
-    Mode="regular"
-elif "--release" in Options:
-    print "Building in release mode..."
-    Mode="release"
+options = sys.argv[1:]
+if len(options) < 1:
+    print("Building in regular mode...")
+    mode = "regular"
+elif "--release" in options:
+    print("Building in release mode...")
+    mode = "release"
 else:
-    print "Unknown option!"
-    sys.exit()
+    print("Unknown option!")
+    sys.exit(0)
 
-ReleaseVersion="1.1"
-BuildVersion=erotes_utils.versioning \
-                         .Version("version") \
-                         .GenerateVersion(ReleaseVersion)
+release_version = "1.1"
+build_version = versioning.Version("version")
+build_version.generate_version(release_version)
 
-PyInstallerExecutable="pyinstaller"
-PyInstallerWorkPath="./pyinstaller/build"
-PyInstallerDistPath="./pyinstaller/dist"
-SpecFile="erotes.spec"
-PyInstallerBuildCommand=PyInstallerExecutable \
-                        + " --workpath=" \
-                        + "\""+PyInstallerWorkPath+"\"" \
-                        + " --distpath=" \
-                        + "\""+PyInstallerDistPath+"\"" \
-                        + " "+SpecFile
+pyinstaller_executable = "pyinstaller"
+pyinstaller_work_path = "./pyinstaller/build"
+pyinstaller_dist_path = "./pyinstaller/dist"
+spec_file = "erotes.spec"
+pyinstaller_build_command = (
+                                "%s "
+                                "--workpath=\"%s\" "
+                                "--distpath=\"%s\" "
+                                "%s"
+                            ) % (
+                                    pyinstaller_executable,
+                                    pyinstaller_work_path,
+                                    pyinstaller_dist_path,
+                                    spec_file
+                                )
 
-ExePath="pyinstaller/dist/erotes"
-DistributablePath="dist"
+exe_path = "pyinstaller/dist/erotes"
+distributable_path = "dist"
 
-SingleFiles=["config.json"]
-Folders=["templates"]
+single_files = ["config.json"]
+folders = ["templates"]
 
-print "Building executable with pyinstaller..."
-print PyInstallerBuildCommand
-os.system(PyInstallerBuildCommand)
+print("Building executable with pyinstaller...")
+print(pyinstaller_build_command)
+os.system(pyinstaller_build_command)
 
-print "Creating distributable folder..."
-erotes_utils.directory_utils \
-            .Folder(DistributablePath) \
-            .Create()
+print("Creating distributable folder...")
+distributable_folder = directory_utils.Folder(distributable_path)
+distributable_folder.create()
 
-print "Copying project executable..."
-distutils.file_util \
-         .copy_file(ExePath,DistributablePath)
+print("Copying project executable...")
+distutils.file_util.copy_file(exe_path, distributable_path)
 
-print "Copying non-source files..."
-for Each in SingleFiles:
-    distutils.file_util \
-         .copy_file(Each,DistributablePath)    
+print("Copying non-source files...")
+for each in single_files:
+    distutils.file_util.copy_file(each, distributable_path)    
 
-for Each in Folders:
-    distutils.dir_util \
-             .copy_tree(Each,DistributablePath+"/"+Each)
+for each in folders:
+    destination_folder = "%s/%s" % (distributable_path, each)
+    distutils.dir_util.copy_tree(each, destination_folder)
 
-if Mode=="release":
-    print "Packaging distributable..."
-    os.chdir(DistributablePath)
-    List=os.listdir(".")
-    LinuxDistPackageName=ErotesDir+"/erotes-linux-"+BuildVersion+".tar.gz"
-    LinuxDistPackage=erotes_utils.archive \
-                                 .ArchiveFile(LinuxDistPackageName) \
-                                 .PackageFiles(List,"ustar","gzip")
+if mode == "release":
+    print("Packaging distributable...")
+    os.chdir(distributable_path)
+    l = os.listdir(".")
+    linux_dist_package_name = "%s/erotes-linux-%s.tar.gz" % (erotes_dir,
+                                                        build_version.number)
+    linux_dist_package = archive.Archive(linux_dist_package_name)
+    linux_dist_package.package_files(l, "ustar", "gzip")
 
-
-
-print "Done."
+print("Done.")

@@ -21,22 +21,22 @@ Available options:
 
 ## Dependencies
 
-- python2.7
+- python3.5+
 - libarchive
 - python-libarchive-c
 - pyinstaller (for building)
 
-On Ubuntu 16.04, these dependencies can be installed by running:
+On Ubuntu 18.04, these dependencies can be installed by running:
 
-```sudo apt-get install python2.7 libarchive13```
+```sudo apt-get install python3 libarchive13```
 
-```pip install libarchive-c pyinstaller```
+```sudo pip3 install libarchive-c pyinstaller```
 
 ## Building
 
 Run:
 
-```./build.py``` 
+```python3 build.py``` 
 
 ## Status
 
@@ -44,7 +44,8 @@ Starting, running and exporting the project are all already implemented. Needs w
 
 ## Todo
 
-- update everything to work with LÖVE 11.0
+- update everything to work with LÖVE ~~11.0~~ 11.3
+- in general support for multiple LÖVE versions could be done
 - platform exports should put game files into folder before packaging
 - export project files that aren't in .love file to platform exports (like readme)
 - bundle libarchive with the erotes pyinstaller build
