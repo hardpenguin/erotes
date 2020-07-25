@@ -5,7 +5,7 @@ import sys
 import distutils.dir_util
 import distutils.file_util
 
-import erotes_utils
+import utils
 
 ErotesDir=os.path.dirname(os.path.abspath(sys.argv[0]))
 os.chdir(ErotesDir)
@@ -22,7 +22,7 @@ else:
     sys.exit()
 
 ReleaseVersion="1.1"
-BuildVersion=erotes_utils.versioning \
+BuildVersion=utils.versioning \
                          .Version("version") \
                          .GenerateVersion(ReleaseVersion)
 
@@ -48,7 +48,7 @@ print PyInstallerBuildCommand
 os.system(PyInstallerBuildCommand)
 
 print "Creating distributable folder..."
-erotes_utils.directory_utils \
+utils.directory_utils \
             .Folder(DistributablePath) \
             .Create()
 
@@ -70,7 +70,7 @@ if Mode=="release":
     os.chdir(DistributablePath)
     List=os.listdir(".")
     LinuxDistPackageName=ErotesDir+"/erotes-linux-"+BuildVersion+".tar.gz"
-    LinuxDistPackage=erotes_utils.archive \
+    LinuxDistPackage=utils.archive \
                                  .ArchiveFile(LinuxDistPackageName) \
                                  .PackageFiles(List,"ustar","gzip")
 

@@ -5,7 +5,7 @@ import libarchive
 import distutils.file_util
 import re
 
-import erotes_utils
+import utils
 
 def ExportLove(WorkDir,NameString,VersionString):
     Blacklisted=[".git",".gitignore"]
@@ -14,14 +14,14 @@ def ExportLove(WorkDir,NameString,VersionString):
     for Each in Blacklisted:
         if Each in List:
             List.remove(Each)
-    ExportPath=erotes_utils.directory_utils \
+    ExportPath=utils.directory_utils \
                            .Folder(WorkDir+"/export") \
                            .Create()
 
     LoveFilePath=ExportPath+"/"+NameString+"_"+VersionString+".love"
 
     print "Creating .love file..."
-    LoveFile=erotes_utils.archive \
+    LoveFile=utils.archive \
                          .ArchiveFile(LoveFilePath) \
                          .PackageFiles(List) # create .love file
 
@@ -47,14 +47,14 @@ def ExportPlatform(WorkDir,NameString,VersionString,Platform):
     for Each in LoveFiles:
         CurrentFile=LovePath+Each
         if os.path.islink(CurrentFile):
-            erotes_utils.symlink_utils \
+            utils.symlink_utils \
                         .Symlink(ExportPath+"/"+Each) \
                         .Create(CurrentFile)
         else:
             distutils.file_util \
                      .copy_file(LovePath+Each,ExportPath)
 
-    erotes_utils.concatenation \
+    utils.concatenation \
                 .Object(GameBinaryPath) \
                 .Concatenate(LoveBinaryPath, \
                   LoveFile)
@@ -69,7 +69,7 @@ def ExportPlatform(WorkDir,NameString,VersionString,Platform):
     PackagePath=ExportPath+"/"+NameString+"_"+VersionString+"_"+Platform+".zip"
 
     os.chdir(ExportPath)
-    ExportPackage=erotes_utils.archive \
+    ExportPackage=utils.archive \
                               .ArchiveFile(PackagePath) \
                               .PackageFiles(ToPackage)
 

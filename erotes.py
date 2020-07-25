@@ -3,37 +3,37 @@
 import os
 import sys
 
-import erotes_start_project
-import erotes_run_project
-import erotes_export_project
-import erotes_utils
+import start
+import run
+import export
+import utils
 
 ErotesDir=os.path.dirname(os.path.abspath(sys.argv[0])) # where does the script reside
 CurrentDir=os.getcwd() # where is the script executed
 
-ErotesConfig=erotes_utils.config \
+ErotesConfig=utils.config \
                          .ConfigFile(ErotesDir+"/config.json") \
                          .Read() # read the config
 Platforms=ErotesConfig["platforms"]
 
-Arguments=erotes_utils.arguments.Arguments(sys.argv) # read arguments
+Arguments=utils.arguments.Arguments(sys.argv) # read arguments
 
-for Option in erotes_utils.options.Options: # create options
+for Option in utils.options.Options: # create options
     Arguments.AddArgument(Option[0], \
                           Option[1], \
                           Option[2])
 
-Mode=erotes_utils.modes \
+Mode=utils.modes \
                  .SelectMode(Arguments) # decide what we're doing
 
 if (Mode=="start"): # start
-    erotes_start_project.StartProject(ErotesConfig,CurrentDir)
+    start.StartProject(ErotesConfig,CurrentDir)
 
 elif (Mode=="run"): # run
-    erotes_run_project.RunWorkplace(CurrentDir)
+    run.RunWorkplace(CurrentDir)
 
 elif (Mode=="export"): # export
-    erotes_export_project.ExportProject(ErotesConfig,CurrentDir)
+    export.ExportProject(ErotesConfig,CurrentDir)
 
 else: # help
     Arguments.DisplayHelp()

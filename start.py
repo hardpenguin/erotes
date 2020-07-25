@@ -4,7 +4,7 @@ import os
 import distutils.dir_util
 import distutils.file_util
 
-import erotes_utils
+import utils
 
 def CreateWorkplace(TemplateSource,WorkDir):
     TemplateName=TemplateSource.split("/")[-1]
@@ -15,7 +15,7 @@ def CreateWorkplace(TemplateSource,WorkDir):
              .copy_tree(TemplateSource,WorkplacePath)
 
 def DownloadLove(Link,Platform,PlatformPath):
-    DownloadedPackage=erotes_utils.download_utils \
+    DownloadedPackage=utils.download_utils \
                                   .Downloadable(Link["link"])
     DownloadDestination=PlatformPath+"/"+DownloadedPackage.Name
 
@@ -26,18 +26,18 @@ def DownloadLove(Link,Platform,PlatformPath):
 
 def UnpackLove(PackageName,Platform,PlatformPath):
     PackageBasename=PackageName.replace(".deb","").replace(".zip","")
-    TargetPath=erotes_utils.directory_utils \
+    TargetPath=utils.directory_utils \
                            .Folder(PlatformPath+"/"+PackageBasename) \
                            .Create()
     os.chdir(TargetPath)
 
     print "Unpacking "+PackageName+"..."
-    erotes_utils.archive \
+    utils.archive \
                 .ArchiveFile(PlatformPath+"/"+PackageName) \
                 .Unpack()
 
     if "linux" in Platform:
-        erotes_utils.archive \
+        utils.archive \
                     .ArchiveFile(TargetPath+"/data.tar.xz") \
                     .Unpack()
 
@@ -48,7 +48,7 @@ def CopyRuntime(Platform,SourcePath,PlatformPath):
             if "linux" in Platform:
                 if ("/usr/bin" in Root) or ("/usr/lib" in Root):
                     if os.path.islink(CurrentFile):
-                        erotes_utils.symlink_utils \
+                        utils.symlink_utils \
                                     .Symlink(PlatformPath+"/"+File) \
                                     .Create(CurrentFile)
                     else:
@@ -67,10 +67,10 @@ def StartProject(ErotesConfig,WorkDir):
     CreateWorkplace(TemplatePath,WorkDir)
 
     for Platform in ErotesConfig["platforms"]:
-        DownloadsPlatformPath=erotes_utils.directory_utils \
+        DownloadsPlatformPath=utils.directory_utils \
                                           .Folder(WorkDir+"/downloads/"+Platform) \
                                           .Create()
-        LovePlatformPath=erotes_utils.directory_utils \
+        LovePlatformPath=utils.directory_utils \
                                      .Folder(WorkDir+"/love/"+Platform) \
                                      .Create()
         for Link in ErotesConfig["links"]:
