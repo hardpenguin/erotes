@@ -2,26 +2,31 @@ import os
 
 class Arguments(object): # command line arguments given
     
-    def __init__(self,Args):
-        self.Args=Args
-        self.SupportedArgs=[]
+    def __init__(self, args):
+        self.args = args
+        self.supported_args = []
 
-    def AddArgument(self,Short,Long,Description):
-        NewArg={ \
-                "short":Short, \
-                "long":Long, \
-                "description":Description \
-               }
-        self.SupportedArgs.append(NewArg)
+    def add_argument(self, short_str, long_str, description):
+        new_arg = {
+                    "short": short_str,
+                    "long": long_str,
+                    "description": description
+                   }
+        self.supported_args.append(new_arg)
 
-    def ChooseFirstArgument(self):
-        return(self.Args[1])
+    def choose_first_argument(self):
+        return(self.args[1])
 
-    def DisplayHelp(self):
-        ScriptName=os.path.basename(self.Args[0])
-        print "Syntax:"
-        print " "+ScriptName+" [options]"
-        print ""
-        print "Available options:"
-        for Arg in self.SupportedArgs:
-            print("  {:5}  {:20}  {:40}".format(Arg["short"]+",",Arg["long"],Arg["description"]))
+    def display_help(self):
+        script_name = os.path.basename(self.args[0])
+        print("Syntax:")
+        print(" %s [options]" % script_name)
+        print()
+        print("Available options:")
+        for arg in self.supported_args:
+            help_line = "  {:5},  {:20}  {:40}".format(
+                                                        arg["short"],
+                                                        arg["long"],
+                                                        arg["description"]
+                                                    )
+            print(help_line)

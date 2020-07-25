@@ -1,11 +1,10 @@
 import os
 
-class Folder(object): # folder to be created, needs name
+class Folder(object):
 
-    def __init__(self,Path):
-        self.Path=Path
+    def __init__(self, path):
+        self.path = path
 
-    def Create(self): # creates folder with a object defined name in a specified path
-        if not os.path.exists(self.Path):
-            os.makedirs(self.Path)
-        return(self.Path)
+    def create(self):
+        if not os.path.exists(self.path):
+            os.makedirs(self.path)

@@ -1,5 +1,3 @@
-#!/usr/bin/python2.7
-
 import os
 
 def RunWorkplace(WorkDir):

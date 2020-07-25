@@ -1,12 +1,14 @@
 import urllib
 
-class Downloadable(object): # file to be downloaded from a specified URL
+class Downloadable(object):
     
-    def __init__(self,Link):
-        self.Link=Link
-        self.Name=self.Link.split("/")[-1] # determine the target name for urlretrieve
+    def __init__(self, link):
+        self.link = link
 
-    def Download(self,Destination): # downloads the file from object defined URL to specified path
-        self.Destination=Destination
-        urllib.urlretrieve(self.Link,self.Destination)
-        # I gave up on handling download errors as bitbucket willingly serves a HTML file for wrong links
+        # determine the target name for urlretrieve
+        self.name = self.link.split("/")[-1]
+
+    def download(self, destination):
+        urllib.urlretrieve(self.link, destination)
+        # I gave up on handling download errors
+        # as bitbucket willingly serves a HTML file for wrong links

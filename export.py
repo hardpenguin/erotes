@@ -1,5 +1,3 @@
-#!/usr/bin/python2.7
-
 import os
 import libarchive
 import distutils.file_util

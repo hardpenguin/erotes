@@ -1,10 +1,12 @@
 import json
 
-class ConfigFile(object): # config file to be loaded and read
+class Config(object):
 
-    def __init__(self,FilePath):
-        self.FilePath=FilePath
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self.contents = None
+        self._read()
 
-    def Read(self):
-        with open(self.FilePath, 'r') as File:
-            return(json.load(File))
+    def _read(self):
+        with open(self.file_path, 'r') as file:
+            self.contents = json.load(file)
